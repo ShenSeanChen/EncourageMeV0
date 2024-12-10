@@ -7,6 +7,7 @@ import { useState } from 'react';
 import ThoughtForm from '@/components/ThoughtForm';
 import ThoughtsList from '@/components/ThoughtsList';
 import EncouragementModal from '@/components/EncouragementModal';
+import ApiKeyInput from '@/components/ApiKeyInput';
 
 export default function Home() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -20,6 +21,8 @@ export default function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center p-8 max-w-4xl mx-auto">
       <h1 className="text-4xl font-bold mb-8 text-center">Encourage Me</h1>
+      
+      <ApiKeyInput />
       
       <ThoughtForm onThoughtAdded={handleNewThought} />
       

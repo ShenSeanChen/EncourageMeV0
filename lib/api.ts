@@ -42,13 +42,22 @@ export async function getThoughts(): Promise<Thought[]> {
  * @returns A string containing an encouraging response
  */
 async function generateEncouragement(content: string): Promise<string> {
+  const savedKey = localStorage.getItem('openai_api_key');
+  
+  if (!savedKey) {
+    return "Please add your OpenAI API key to receive personalized encouragement!";
+  }
+
   try {
     const response = await fetch('/api/generate-encouragement', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ content }),
+      body: JSON.stringify({ 
+        content,
+        apiKey: savedKey
+      }),
     });
 
     if (!response.ok) {

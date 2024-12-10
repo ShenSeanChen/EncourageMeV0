@@ -4,14 +4,19 @@
 import { NextResponse } from 'next/server';
 import OpenAI from 'openai';
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
-
 export async function POST(request: Request) {
   try {
-    const { content } = await request.json();
-    
+    const { content, apiKey } = await request.json();
+
+    if (!apiKey) {
+      return NextResponse.json(
+        { error: 'OpenAI API key is required' },
+        { status: 400 }
+      );
+    }
+
+    const openai = new OpenAI({ apiKey });
+
     const response = await openai.chat.completions.create({
       model: "gpt-4",
       messages: [
@@ -31,11 +36,11 @@ export async function POST(request: Request) {
     return NextResponse.json({ 
       encouragement: response.choices[0].message.content 
     });
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error:', error);
     return NextResponse.json(
-      { error: 'Failed to generate encouragement' }, 
-      { status: 500 }
+      { error: error.message || 'Failed to generate encouragement' },
+      { status: error.status || 500 }
     );
   }
 } 
