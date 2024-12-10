@@ -61,13 +61,22 @@ async function generateEncouragement(content: string): Promise<string> {
     });
 
     if (!response.ok) {
-      throw new Error('Failed to generate encouragement');
+      const errorData = await response.json();
+      console.error('API Error:', errorData);
+      throw new Error(errorData.error || 'Failed to generate encouragement');
     }
 
     const data = await response.json();
-    return data.encouragement || "You're doing great! Keep going!";
+    if (!data.encouragement) {
+      throw new Error('No encouragement received from API');
+    }
+    return data.encouragement;
   } catch (error) {
     console.error('Error generating encouragement:', error);
+    // Check if it's an API key related error
+    if (error instanceof Error && error.message.includes('API key')) {
+      return "Please check your OpenAI API key and try again.";
+    }
     return "You're amazing! Keep moving forward!";
   }
 }
