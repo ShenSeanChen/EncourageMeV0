@@ -7,7 +7,6 @@ import { useState } from 'react';
 import ThoughtForm from '@/components/ThoughtForm';
 import ThoughtsList from '@/components/ThoughtsList';
 import EncouragementModal from '@/components/EncouragementModal';
-import { Thought } from '@/types';
 
 export default function Home() {
   const [isModalOpen, setIsModalOpen] = useState(false);
