@@ -3,7 +3,6 @@
 
 import { NextResponse } from 'next/server';
 import OpenAI from 'openai';
-import { APIError } from 'openai';
 
 export async function POST(request: Request) {
   try {
@@ -43,7 +42,7 @@ export async function POST(request: Request) {
     const errorInstance = error instanceof Error ? error : new Error(String(error));
     return NextResponse.json(
       { error: errorInstance.message || 'Failed to generate encouragement' },
-      { status: 500 } // Assuming a generic error status for unknown errors
+      { status: 500 }
     );
   }
 } 
